@@ -28,7 +28,7 @@ mongoose
 
 //Routes
 app.get("/", (req, res) => {
-  res.send("Welcome to the Job Portal API!");
+  res.send("Welcome to the Job Portal API Ho ni haina rw !");
 });
 
 //Ports
