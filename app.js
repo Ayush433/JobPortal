@@ -5,11 +5,14 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 require("dotenv").config();
 var cors = require("cors");
+const checkAuth = require("./Middleware/check_auth");
 
 // Middleware
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(cors());
+
+app.use(checkAuth);
 
 // Connection to the database
 mongoose
