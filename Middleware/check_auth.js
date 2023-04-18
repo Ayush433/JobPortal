@@ -19,28 +19,13 @@ const auth = (req, res, next) => {
 
 module.exports = auth;
 
-// const jwt = require("jsonwebtoken");
-
-// const checkAuth = (req, res, next) => {
-//   try {
-//     const token = req.headers.authorization;
-//     console.log("Token:", token);
-//     if (token) {
-//       const decoded = jwt.verify(token, "tokenGenerated");
-//       console.log("Decoded:", decode);
-//       req.user = decoded;
-//       next();
-//     } else {
-//       return res.status(401).json({
-//         status: 401,
-//         message: "You are not authorized",
-//       });
-//     }
-//   } catch (err) {
-//     return res.status(401).json({
-//       status: 401,
-//       message: "You are not authorized",
-//     });
-//   }
-// };
-// module.exports = checkAuth;
+// For admin
+module.exports.isAdmin = async (req, res, next) => {
+  if (req.user.role === 0) {
+    return res.status(400).json({
+      status: 400,
+      message: "Access Denied You Must be an Admin",
+    });
+  }
+  next();
+};
