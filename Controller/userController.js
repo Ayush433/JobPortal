@@ -1,6 +1,7 @@
 const User = require("../Models/userModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const auth = require("../Middleware/check_auth");
 
 module.exports.signUp = async (req, res) => {
   const { fullName, password, email } = req.body;
@@ -44,6 +45,7 @@ module.exports.Login = async (req, res) => {
       );
       if (isValidPassword) {
         const token = jwt.sign({ id: isExistUser._id }, "tokenGenerated");
+
         return res.status(200).json({
           status: 200,
           data: {
@@ -71,5 +73,22 @@ module.exports.Login = async (req, res) => {
       status: 400,
       message: "Not Found",
     });
+  }
+};
+
+module.exports.userProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const userProfile = {
+      fullName: user.fullName,
+      email: user.email,
+    };
+    res.status(200).json(userProfile);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 };
