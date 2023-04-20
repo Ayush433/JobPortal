@@ -40,3 +40,37 @@ module.exports.singleUser = async (req, res, next) => {
     });
   }
 };
+
+// edit user
+
+module.exports.editUser = async (req, res, next) => {
+  try {
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    return res.status(200).json({
+      status: 200,
+      user,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: 400,
+      message: error,
+    });
+  }
+};
+
+module.exports.deleteUser = async (req, res, next) => {
+  try {
+    const user = await User.findByIdAndRemove(req.params.id);
+    return res.status(200).json({
+      status: 200,
+      message: "User Deleted",
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: 400,
+      message: error,
+    });
+  }
+};

@@ -16,6 +16,7 @@ const LoginSchema = joi.object({
   email: joi.string().email().required(),
   password: joi.string().required(),
 });
+
 router.post(
   "/api/userSignup",
   validation.body(SignUpSchema),
@@ -27,6 +28,13 @@ router.post(
   userController.Login
 );
 router.get("/api/Profile", auth, userController.userProfile);
+
 router.get("/api/allUsers", auth, auth.isAdmin, user.allUsers);
+
 router.get("/api/user/:id", user.singleUser);
+
+router.put("/api/user/edit/:id", user.editUser);
+
+router.delete("/api/user/admin/delete/:id", auth.isAdmin, user.deleteUser);
+
 module.exports = router;
