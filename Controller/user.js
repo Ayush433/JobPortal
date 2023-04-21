@@ -62,15 +62,34 @@ module.exports.editUser = async (req, res, next) => {
 
 module.exports.deleteUser = async (req, res, next) => {
   try {
-    const user = await User.findByIdAndRemove(req.params.id);
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({
+        status: 404,
+        message: "User not found",
+      });
+    }
+    if (req.user.role === 0 && user.role !== 0) {
+      return res.status(403).json({
+        status: 403,
+        message: "Access denied. You must be an admin to delete users",
+      });
+    }
+    if (req.user.role === 1 && req.user.id !== user.id) {
+      return res.status(403).json({
+        status: 403,
+        message: "Access denied. You can only delete your own account",
+      });
+    }
+    await user.remove();
     return res.status(200).json({
       status: 200,
-      message: "User Deleted",
+      message: "User deleted",
     });
   } catch (error) {
     return res.status(400).json({
       status: 400,
-      message: error,
+      message: error.message,
     });
   }
 };

@@ -11,6 +11,7 @@ const SignUpSchema = joi.object({
   fullName: joi.string().min(5).max(20).required(),
   email: joi.string().email().required(),
   password: joi.string().required().max(20),
+  role: joi.number().optional(),
 });
 const LoginSchema = joi.object({
   email: joi.string().email().required(),
@@ -35,6 +36,11 @@ router.get("/api/user/:id", user.singleUser);
 
 router.put("/api/user/edit/:id", user.editUser);
 
-router.delete("/api/user/admin/delete/:id", auth.isAdmin, user.deleteUser);
+router.delete(
+  "/api/user/admin/delete/:id",
+  auth,
+  auth.isAdmin,
+  user.deleteUser
+);
 
 module.exports = router;

@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const auth = require("../Middleware/check_auth");
 
 module.exports.signUp = async (req, res) => {
-  const { fullName, password, email } = req.body;
+  const { fullName, password, email, role } = req.body;
 
   try {
     const isExistUser = await User.findOne({ email: email });
@@ -17,8 +17,8 @@ module.exports.signUp = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 12);
     await User.create({
       fullName,
-
       email,
+      role,
       password: hashedPassword,
     });
     return res.status(201).json({
