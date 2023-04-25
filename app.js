@@ -7,6 +7,7 @@ require("dotenv").config();
 var cors = require("cors");
 const checkAuth = require("./Middleware/check_auth");
 const userRoutes = require("./Routes/userRoutes");
+const jobTypeRoutes = require("./Routes/jobTypeRoutes");
 
 // Middleware
 app.use(morgan("dev"));
@@ -35,6 +36,7 @@ app.get("/", (req, res) => {
   res.send("Welcome to the Job Portal API Ho ni haina rw !");
 });
 app.use(userRoutes);
+app.use(jobTypeRoutes);
 
 //Ports
 const port = process.env.PORT || 9000;
