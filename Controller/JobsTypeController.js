@@ -16,3 +16,17 @@ module.exports.createJobType = async (req, res, next) => {
     // Return error grda ni huxna
   }
 };
+
+// all Job Category
+module.exports.allJobType = async (req, res, next) => {
+  try {
+    const jobT = await JobType.find();
+    return res.status(200).json({
+      status: 200,
+      jobT,
+    });
+  } catch (error) {
+    next(error);
+    // Return error grda ni huxna
+  }
+};

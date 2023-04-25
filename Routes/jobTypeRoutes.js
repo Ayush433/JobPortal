@@ -9,11 +9,14 @@ const router = express.Router();
 const JobsTypeControllerSchema = joi.object({
   jobTypeName: joi.string().min(5).max(30).required(),
 });
-
+// Api for create JOb
 router.post(
-  "/type/create",
+  "/api/type/create",
+  auth,
   validation.body(JobsTypeControllerSchema),
+
   JobsTypeController.createJobType
 );
-
+// api for all Job
+router.get("/api/jobs", auth, JobsTypeController.allJobType);
 module.exports = router;
