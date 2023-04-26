@@ -8,6 +8,7 @@ var cors = require("cors");
 const checkAuth = require("./Middleware/check_auth");
 const userRoutes = require("./Routes/userRoutes");
 const jobTypeRoutes = require("./Routes/jobTypeRoutes");
+const jobRoutes = require("./Routes/jobRoutes");
 
 // Middleware
 app.use(morgan("dev"));
@@ -37,6 +38,7 @@ app.get("/", (req, res) => {
 });
 app.use(userRoutes);
 app.use(jobTypeRoutes);
+app.use(jobRoutes);
 
 //Ports
 const port = process.env.PORT || 9000;
