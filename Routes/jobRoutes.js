@@ -17,8 +17,16 @@ const jobSchema = joi.object({
 // Api for create JOb
 router.post(
   "/api/create",
-  auth,
+  //   auth,
+  auth.isAdmin,
   validation.body(jobSchema),
   JobController.createJob
 );
+
+// api for single job
+router.get("/api/:id", JobController.singleJob);
+
+// api for Update Job
+router.put("/job/update/:job_id", auth, JobController.updateJob);
+
 module.exports = router;

@@ -28,7 +28,7 @@ const jobSchema = new Schema(
     },
     jobType: {
       type: ObjectId,
-      ref: "jobType",
+      ref: "JobType",
       required: true,
     },
     user: {

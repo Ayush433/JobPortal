@@ -19,6 +19,45 @@ module.exports.createJob = async (req, res, next) => {
   }
 };
 
+// single job
+
+module.exports.singleJob = async (req, res, next) => {
+  try {
+    const job = await Job.findById(req.params.id);
+    return res.status(201).json({
+      status: 201,
+      job,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+// update a job
+
+module.exports.updateJob = async (req, res, next) => {
+  try {
+    const job = await Job.findByIdAndUpdate(req.params.job_id, req.body, {
+      new: true,
+    })
+      .populate("jobType", "jobTypeName")
+      .populate("user", "fullName");
+
+    if (!job) {
+      return res.status(404).json({
+        status: 404,
+        message: "Job not found",
+      });
+    }
+
+    return res.status(201).json({
+      status: 201,
+      job,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Both code works maile grni tarika mah validate grna parni raixa
 
 // module.exports.createJob = async (req, res, next) => {
