@@ -58,6 +58,28 @@ module.exports.updateJob = async (req, res, next) => {
   }
 };
 
+// ShowJob
+module.exports.showJob = async (req, res, next) => {
+  //enable pagination
+  const pageSize = 5;
+  const page = Number(req.query.pageNumber) || 1;
+  const count = await Job.find({}).estimatedDocumentCount();
+  try {
+    const jobs = await Job.find()
+      .skip(pageSize * (page - 1))
+      .limit(pageSize);
+    return res.status(201).json({
+      status: 201,
+      jobs,
+      page,
+      pages: Math.ceil(count / pageSize),
+      count,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Both code works maile grni tarika mah validate grna parni raixa
 
 // module.exports.createJob = async (req, res, next) => {

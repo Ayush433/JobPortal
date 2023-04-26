@@ -12,7 +12,7 @@ const jobSchema = new Schema(
     description: {
       type: String,
       required: true,
-      maxlength: 70,
+      maxlength: 10000,
     },
     salary: {
       type: String,
