@@ -19,4 +19,19 @@ router.post(
 );
 // api for all Job
 router.get("/api/jobs", auth, JobsTypeController.allJobType);
+
+// api for UpdateJobTyp
+
+router.put(
+  "/api/update/:type_id",
+  auth,
+  auth.isAdmin,
+  JobsTypeController.updateJobType
+);
+router.delete(
+  "/api/delete/:type_id",
+  auth,
+  auth.isAdmin,
+  JobsTypeController.deleteJobType
+);
 module.exports = router;
