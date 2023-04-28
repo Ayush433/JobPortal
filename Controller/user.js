@@ -105,3 +105,75 @@ module.exports.deleteUser = async (req, res, next) => {
     });
   }
 };
+
+// module.exports.JobHistory = async (req, res, next) => {
+//   const { title, description, salary, location, email } = req.body;
+//   try {
+//     const currentUser = await User.findOne({ email: email });
+//     console.log(currentUser);
+//     // console.log(user);
+//     if (!currentUser) {
+//       return res.status(404).json({
+//         status: 404,
+//         message: "User not found",
+//       });
+//     } else {
+//       const addJobHistory = {
+//         title,
+//         description,
+//         salary,
+//         location,
+//         user: req.user._id,
+//       };
+//       currentUser.JobHistory.push(addJobHistory);
+//       await currentUser.save();
+//     }
+//     res.status(201).json({
+//       status: 201,
+//       currentUser,
+//     });
+//     next();
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(400).json({
+//       status: 400,
+//       message: error.message,
+//     });
+//   }
+// };
+
+module.exports.JobHistory = async (req, res, next) => {
+  const { title, description, salary, location } = req.body;
+  try {
+    const currentUser = await User.findOne({ _id: req.user._id });
+    console.log(currentUser);
+    // console.log(user);
+    if (!currentUser) {
+      return res.status(404).json({
+        status: 404,
+        message: "User not found",
+      });
+    } else {
+      const addJobHistory = {
+        title,
+        description,
+        salary,
+        location,
+        user: req.user._id,
+      };
+      currentUser.JobHistory.push(addJobHistory);
+      await currentUser.save();
+    }
+    res.status(201).json({
+      status: 201,
+      currentUser,
+    });
+    next();
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      status: 400,
+      message: error.message,
+    });
+  }
+};

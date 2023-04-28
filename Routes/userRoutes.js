@@ -43,4 +43,7 @@ router.delete(
   user.deleteUser
 );
 
+// api for JobHistory
+router.post("/api/user/jobHistory", auth, user.JobHistory);
+
 module.exports = router;
