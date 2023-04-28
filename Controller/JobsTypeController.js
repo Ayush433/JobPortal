@@ -50,7 +50,6 @@ module.exports.updateJobType = async (req, res, next) => {
 module.exports.deleteJobType = async (req, res) => {
   try {
     const jobT = await JobType.findByIdAndDelete(req.params.type_id);
-
     return res.status(200).json({
       status: 200,
       message: "Job Type Deleted",

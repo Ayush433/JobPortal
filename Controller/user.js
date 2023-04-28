@@ -145,9 +145,7 @@ module.exports.deleteUser = async (req, res, next) => {
 module.exports.JobHistory = async (req, res, next) => {
   const { title, description, salary, location } = req.body;
   try {
-    const currentUser = await User.findOne({ _id: req.user._id });
-    console.log(currentUser);
-    // console.log(user);
+    const currentUser = await User.findById(req.user.id);
     if (!currentUser) {
       return res.status(404).json({
         status: 404,
@@ -159,16 +157,15 @@ module.exports.JobHistory = async (req, res, next) => {
         description,
         salary,
         location,
-        user: req.user._id,
+        user: req.user.id,
       };
-      currentUser.JobHistory.push(addJobHistory);
+      currentUser.jobHistory.push(addJobHistory);
       await currentUser.save();
+      res.status(201).json({
+        status: 201,
+        currentUser,
+      });
     }
-    res.status(201).json({
-      status: 201,
-      currentUser,
-    });
-    next();
   } catch (error) {
     console.log(error);
     return res.status(400).json({
