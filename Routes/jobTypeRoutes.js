@@ -18,7 +18,7 @@ router.post(
   JobsTypeController.createJobType
 );
 // api for all Job
-router.get("/api/jobs", auth, JobsTypeController.allJobType);
+router.get("/api/jobs", JobsTypeController.allJobType);
 
 // api for UpdateJobTyp
 
