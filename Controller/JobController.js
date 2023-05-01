@@ -59,11 +59,55 @@ module.exports.updateJob = async (req, res, next) => {
   }
 };
 
+// module.exports.showJob = async (req, res, next) => {
+//   // enable search
+//   const keyword = req.query.keyword
+//     ? { title: { $regex: req.query.keyword, $options: "i" } }
+//     : {};
+
+//   // filter by category
+//   const jobTypeId = req.query.cat ? req.query.cat : "";
+//   const jobType = jobTypeId ? await JobType.findById(jobTypeId) : null;
+
+//   // filter by location
+//   const allLocations = await Job.distinct("location");
+//   const searchLocation = req.query.location ? req.query.location : undefined;
+//   const locationFilter = searchLocation ? searchLocation : allLocations;
+
+//   // enable pagination
+//   const pageSize = 5;
+//   const page = Number(req.query.pageNumber) || 1;
+//   const count = await Job.find({
+//     ...keyword,
+//     jobType: jobType ? jobType._id : { $exists: true },
+//     location: { $in: locationFilter },
+//   }).countDocuments();
+//   try {
+//     const jobs = await Job.find({
+//       ...keyword,
+//       jobType: jobType ? jobType._id : { $exists: true },
+//       location: { $in: locationFilter },
+//     })
+//       .skip(pageSize * (page - 1))
+//       .limit(pageSize);
+//     return res.status(201).json({
+//       status: 201,
+//       jobs,
+//       page,
+//       pages: Math.ceil(count / pageSize),
+//       count,
+//       allLocations,
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
 // ShowJob
 
 module.exports.showJob = async (req, res, next) => {
   //enable Search
-  const Keyword = req.query.keyword
+  const keyword = req.query.keyword
     ? {
         title: {
           $regex: req.query.keyword,
@@ -79,13 +123,13 @@ module.exports.showJob = async (req, res, next) => {
     ids.push(cat._id);
   });
 
-  let cat = req.query.cat;
-  let categ = cat !== "" ? ids : undefined;
+  let category = req.query.category;
+  let categ = category !== "" ? ids : undefined;
 
   // Job By Location
   let locations = [];
   const jobByLocation = await Job.find(
-    { ...Keyword, jobType: categ },
+    { ...keyword, jobType: categ },
     { location: 1 }
   );
   jobByLocation.forEach((val) => {
@@ -102,13 +146,13 @@ module.exports.showJob = async (req, res, next) => {
   const page = Number(req.query.pageNumber) || 1;
   //   const count = await Job.find({}).estimatedDocumentCount();
   const count = await Job.find({
-    ...Keyword,
+    ...keyword,
     jobType: categ,
     location: locationFilter,
   }).countDocuments();
   try {
     const jobs = await Job.find({
-      ...Keyword,
+      ...keyword,
       jobType: categ,
       location: { $in: setUniqueLocation },
     })
