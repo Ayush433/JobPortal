@@ -28,6 +28,7 @@ router.post(
   validation.body(LoginSchema),
   userController.Login
 );
+router.get("/api/logout", userController.logout);
 router.get("/api/Profile", auth, userController.userProfile);
 
 router.get("/api/allUsers", auth, auth.isAdmin, user.allUsers);

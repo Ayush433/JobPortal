@@ -92,3 +92,11 @@ module.exports.userProfile = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+//logout
+module.exports.logout = (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({
+    success: true,
+    message: "logged out",
+  });
+};
