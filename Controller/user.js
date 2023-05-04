@@ -174,3 +174,19 @@ module.exports.JobHistory = async (req, res, next) => {
     });
   }
 };
+module.exports.userProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const userProfile = {
+      fullName: user.fullName,
+      email: user.email,
+    };
+    res.status(200).json(userProfile);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};

@@ -53,6 +53,7 @@ module.exports.Login = async (req, res) => {
             fullName: isExistUser.fullName,
             email: isExistUser.email,
             token,
+            role: isExistUser.role,
           },
         });
       } else {
