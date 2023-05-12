@@ -143,7 +143,7 @@ module.exports.deleteUser = async (req, res, next) => {
 // };
 
 module.exports.JobHistory = async (req, res, next) => {
-  const { title, description, salary, location } = req.body;
+  const { title, description, salary, location, contact } = req.body;
   try {
     const currentUser = await User.findById(req.user.id);
     if (!currentUser) {
@@ -157,6 +157,7 @@ module.exports.JobHistory = async (req, res, next) => {
         description,
         salary,
         location,
+        contact,
         user: req.user.id,
       };
       currentUser.jobHistory.push(addJobHistory);
