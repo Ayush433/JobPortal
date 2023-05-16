@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 require("dotenv").config();
-var cors = require("cors");
+const cors = require("cors");
 const checkAuth = require("./Middleware/check_auth");
 const userRoutes = require("./Routes/userRoutes");
 const jobTypeRoutes = require("./Routes/jobTypeRoutes");
@@ -35,6 +35,12 @@ mongoose
 //Routes
 app.get("/", (req, res) => {
   res.send("Welcome to the Job Portal API Ho ni haina rw !");
+});
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
 });
 app.use(userRoutes);
 app.use(jobTypeRoutes);
