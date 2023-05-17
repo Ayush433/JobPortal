@@ -6,6 +6,7 @@ const userController = require("../Controller/userController");
 const { createValidator } = require("express-joi-validation");
 const auth = require("../Middleware/check_auth");
 const user = require("../Controller/user");
+const isAdmin = require("../Middleware/check_auth");
 
 const SignUpSchema = joi.object({
   fullName: joi.string().min(5).max(20).required(),
@@ -36,6 +37,13 @@ router.get("/api/allUsers", auth, auth.isAdmin, user.allUsers);
 router.get("/api/user/:id", user.singleUser);
 
 router.put("/api/user/edit/:id", user.editUser);
+
+router.options("/admin/delete/:id", (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "DELETE");
+  res.header("Access-Control-Allow-Headers", "authorization");
+  res.sendStatus(204); // No Content
+});
 
 router.delete(
   "/api/user/admin/delete/:id",
