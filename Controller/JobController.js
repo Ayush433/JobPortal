@@ -202,3 +202,26 @@ module.exports.showJob = async (req, res, next) => {
 //     next(error);
 //   }
 // };
+
+module.exports.deleteJob = async (req, res) => {
+  try {
+    const deletedJob = await Job.findByIdAndDelete(req.params.id);
+    if (!deletedJob) {
+      return res.status(404).json({
+        status: 404,
+        message: "Job Type not found",
+      });
+    }
+
+    return res.status(200).json({
+      status: 200,
+      message: "Job Type deleted",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      status: 500,
+      message: "Server Error",
+    });
+  }
+};

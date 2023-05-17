@@ -31,5 +31,6 @@ router.put("/job/update/:job_id", auth, JobController.updateJob);
 
 // api for Show Job
 router.get("/jobs/show", JobController.showJob);
+router.delete("/jobs/delete/:id", auth, JobController.deleteJob);
 
 module.exports = router;
