@@ -157,6 +157,8 @@ module.exports.showJob = async (req, res, next) => {
       location: { $in: setUniqueLocation },
     })
       .sort({ createdAt: -1 })
+      .populate("jobType", "jobTypeName")
+      .populate("User", "fullName")
 
       .skip(pageSize * (page - 1))
       .limit(pageSize);

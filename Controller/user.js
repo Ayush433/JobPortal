@@ -60,49 +60,62 @@ module.exports.editUser = async (req, res, next) => {
   }
 };
 
+// module.exports.deleteUser = async (req, res, next) => {
+//   try {
+//     const user = await User.findById(req.params.id);
+//     console.log(user);
+//     if (!user) {
+//       return res.status(404).json({
+//         status: 404,
+//         message: "User not found",
+//       });
+//     }
+//     if (req.user.role === 0) {
+//       if (user._id.toString() !== req.user.id) {
+//         return res.status(403).json({
+//           status: 403,
+//           message: "Access denied. You can only delete your own account",
+//         });
+//       } else {
+//         await user.remove();
+//         return res.status(200).json({
+//           status: 200,
+//           message: "User deleted",
+//         });
+//       }
+//     } else if (req.user.role === 1) {
+//       if (user.role === 1) {
+//         await user.remove();
+//         return res.status(200).json({
+//           status: 200,
+//           message: "User deleted",
+//         });
+//       } else {
+//         return res.status(403).json({
+//           status: 403,
+//           message: "Access denied. You must be an admin to delete other users",
+//         });
+//       }
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(400).json({
+//       status: 400,
+//       message: error.message,
+//     });
+//   }
+// };
+
 module.exports.deleteUser = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.id);
-    console.log(user);
-    if (!user) {
-      return res.status(404).json({
-        status: 404,
-        message: "User not found",
-      });
-    }
-    if (req.user.role === 0) {
-      if (user._id.toString() !== req.user.id) {
-        return res.status(403).json({
-          status: 403,
-          message: "Access denied. You can only delete your own account",
-        });
-      } else {
-        await user.remove();
-        return res.status(200).json({
-          status: 200,
-          message: "User deleted",
-        });
-      }
-    } else if (req.user.role === 1) {
-      if (user.role === 1) {
-        await user.remove();
-        return res.status(200).json({
-          status: 200,
-          message: "User deleted",
-        });
-      } else {
-        return res.status(403).json({
-          status: 403,
-          message: "Access denied. You must be an admin to delete other users",
-        });
-      }
-    }
-  } catch (error) {
-    console.log(error);
-    return res.status(400).json({
-      status: 400,
-      message: error.message,
+    const user = await User.findByIdAndRemove(req.params.id);
+    res.status(200).json({
+      success: true,
+      message: "user deleted",
     });
+    next();
+  } catch (error) {
+    return next(error);
   }
 };
 
