@@ -31,10 +31,7 @@ const jobSchema = new Schema(
       ref: "JobType",
       required: true,
     },
-    contact: {
-      type: String,
-      required: true,
-    },
+
     user: {
       type: ObjectId,
       ref: "User",
