@@ -11,9 +11,9 @@ const jobTypeRoutes = require("./Routes/jobTypeRoutes");
 const jobRoutes = require("./Routes/jobRoutes");
 
 // Middleware
+app.use(cors());
 app.use(morgan("dev"));
 app.use(bodyParser.json());
-app.use(cors());
 
 // app.use(checkAuth);
 

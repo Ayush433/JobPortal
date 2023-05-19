@@ -25,14 +25,23 @@ module.exports.createJob = async (req, res, next) => {
 module.exports.singleJob = async (req, res, next) => {
   try {
     const job = await Job.findById(req.params.id);
-    return res.status(201).json({
-      status: 201,
+
+    if (!job) {
+      return res.status(404).json({
+        status: 404,
+        message: "Job not found",
+      });
+    }
+
+    return res.status(200).json({
+      status: 200,
       job,
     });
   } catch (error) {
     next(error);
   }
 };
+
 // update a job
 
 module.exports.updateJob = async (req, res, next) => {
