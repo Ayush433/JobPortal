@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const auth = require("../Middleware/check_auth");
 
 module.exports.signUp = async (req, res) => {
-  const { fullName, password, email, role } = req.body;
+  const { fullName, password, email, role, confirmPassword } = req.body;
 
   try {
     const isExistUser = await User.findOne({ email: email });
@@ -20,6 +20,7 @@ module.exports.signUp = async (req, res) => {
       email,
       role,
       password: hashedPassword,
+      confirmPassword: hashedPassword,
     });
     return res.status(201).json({
       status: 201,

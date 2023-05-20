@@ -13,6 +13,7 @@ const SignUpSchema = joi.object({
   email: joi.string().email().required(),
   password: joi.string().required().max(20),
   role: joi.number().optional(),
+  confirmPassword: joi.string().optional(),
 });
 const LoginSchema = joi.object({
   email: joi.string().email().required(),

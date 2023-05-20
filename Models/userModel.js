@@ -56,6 +56,10 @@ const userSchema = new Schema(
       required: true,
       minlength: 0,
     },
+    confirmPassword: {
+      type: String,
+      required: false,
+    },
     role: {
       type: Number,
       default: 0,
