@@ -44,24 +44,31 @@ module.exports.singleJob = async (req, res, next) => {
 
 // update a job
 
+// Controller: updateJob.js
+
 module.exports.updateJob = async (req, res, next) => {
   try {
-    const job = await Job.findByIdAndUpdate(req.params.job_id, req.body, {
-      new: true,
-    })
+    const { job_id } = req.params;
+    const { title, description, location, salary } = req.body;
+
+    const updatedJob = await Job.findByIdAndUpdate(
+      job_id,
+      { title, description, location, salary },
+      { new: true }
+    )
       .populate("jobType", "jobTypeName")
       .populate("user", "fullName");
 
-    if (!job) {
+    if (!updatedJob) {
       return res.status(404).json({
         status: 404,
         message: "Job not found",
       });
     }
 
-    return res.status(201).json({
-      status: 201,
-      job,
+    return res.status(200).json({
+      status: 200,
+      job: updatedJob,
     });
   } catch (error) {
     next(error);
@@ -113,9 +120,8 @@ module.exports.updateJob = async (req, res, next) => {
 // };
 
 // ShowJob
-
 module.exports.showJob = async (req, res, next) => {
-  //enable Search
+  // Enable search
   const keyword = req.query.keyword
     ? {
         title: {
@@ -124,60 +130,55 @@ module.exports.showJob = async (req, res, next) => {
         },
       }
     : {};
-  // filter by Category
 
-  let ids = [];
+  // Filter by category
   const jobTypeCategory = await JobType.find({}, { _id: 1 });
-  jobTypeCategory.forEach((cat) => {
-    ids.push(cat._id);
-  });
+  const category = req.query.category;
+  const categ =
+    category !== "" ? jobTypeCategory.map((cat) => cat._id) : undefined;
 
-  let category = req.query.category;
-  let categ = category !== "" ? ids : undefined;
-
-  // Job By Location
-  let locations = [];
+  // Job by location
   const jobByLocation = await Job.find(
     { ...keyword, jobType: categ },
     { location: 1 }
   );
-  jobByLocation.forEach((val) => {
-    locations.push(val.location);
-  });
+  const locations = jobByLocation.map((val) => val.location);
 
-  // Unique Location
-  let setUniqueLocation = [...new Set(locations)];
-  let location = req.query.location;
-  let locationFilter = location !== "" ? location : setUniqueLocation;
+  // Unique locations
+  const uniqueLocations = [...new Set(locations)];
+  const location = req.query.location;
+  const locationFilter = location !== "" ? location : uniqueLocations;
 
-  //enable pagination
+  // Enable pagination
   const pageSize = 5;
   const page = Number(req.query.pageNumber) || 1;
-  //   const count = await Job.find({}).estimatedDocumentCount();
-  const count = await Job.find({
-    ...keyword,
-    jobType: categ,
-    location: locationFilter,
-  }).countDocuments();
+
   try {
+    const count = await Job.find({
+      ...keyword,
+      jobType: categ,
+      location: locationFilter,
+    }).countDocuments();
+
+    const totalPages = Math.ceil(count / pageSize);
     const jobs = await Job.find({
       ...keyword,
       jobType: categ,
-      location: { $in: setUniqueLocation },
+      location: { $in: uniqueLocations },
     })
       .sort({ createdAt: -1 })
       .populate("jobType", "jobTypeName")
       .populate("User", "fullName")
-
       .skip(pageSize * (page - 1))
       .limit(pageSize);
-    return res.status(201).json({
-      status: 201,
+
+    return res.status(200).json({
+      status: 200,
       jobs,
       page,
-      pages: Math.ceil(count / pageSize),
+      totalPages,
       count,
-      setUniqueLocation,
+      uniqueLocations,
     });
   } catch (error) {
     res.status(404).json({ error: "Job not found" });
