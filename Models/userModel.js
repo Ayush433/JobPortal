@@ -8,7 +8,6 @@ const jobHistorySchema = new Schema(
   {
     title: {
       type: String,
-
       maxlength: 70,
     },
     description: {
@@ -35,7 +34,7 @@ const jobHistorySchema = new Schema(
     },
   },
   { timestamps: true }
-); // date and updated date
+);
 
 module.exports = mongoose.model("JobHistory", jobHistorySchema);
 
@@ -67,6 +66,6 @@ const userSchema = new Schema(
     jobHistory: [jobHistorySchema],
   },
   { timestamps: true }
-); // date and updated date
+);
 
 module.exports = mongoose.model("User", userSchema);

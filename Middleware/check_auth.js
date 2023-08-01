@@ -12,7 +12,7 @@ const auth = (req, res, next) => {
       id: decodedToken.id,
       role: decodedToken.role,
     };
-    // console.log("req.user:", req.user);
+    console.log("req.user:", req.user);
     next();
   } catch (err) {
     console.log("err:", err);
